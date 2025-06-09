@@ -2,16 +2,21 @@ export interface Film {
   id: string;
   title: string;
   year: number;
-  releaseDate: string;
-  director: string;
-  description?: string;
-  posterUrl: string;
-  duration: number; // in minutes
-  dateAdded: string;
-  contentRating?: string; // e.g., 'PG-13', 'R', etc.
+  summary: string;
+  thumb: string;
+  art: string;
+  duration: number;
+  rating: number;
+  contentRating: string;
+  studio: string;
   genres: string[];
-  audioLanguages?: string[];
-  subtitleLanguages?: string[];
+  directors: string[];
+  writers: string[];
+  actors: string[];
+  addedAt: number;
+  updatedAt: number;
+  lastViewedAt?: number;
+  viewCount: number;
 }
 
 export type SortField = 'releaseDate' | 'dateAdded' | 'title' | 'duration';

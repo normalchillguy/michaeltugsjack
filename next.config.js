@@ -17,7 +17,7 @@ const nextConfig = {
   // Ensure static files are copied
   webpack: (config) => {
     config.module.rules.push({
-      test: /\.(json)$/,
+      test: /\.(json|svg)$/,
       type: 'asset/resource',
     });
     return config;

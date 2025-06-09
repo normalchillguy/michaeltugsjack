@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Film } from '@/types/film';
 import FilmDetail from './FilmDetail';
 import LoadingClapper from '@/components/LoadingClapper';
-import { getPosterPath } from '@/utils/paths';
+import { posters } from '@/assets/posters';
 
 interface FilmListProps {
   films: Film[];
@@ -38,7 +38,7 @@ export default function FilmList({ films }: FilmListProps) {
               </div>
             )}
             <img
-              src={getPosterPath(film.id)}
+              src={posters[film.id].src}
               alt={`${film.title} poster`}
               className={`w-full h-full object-cover ${
                 loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
@@ -46,6 +46,8 @@ export default function FilmList({ films }: FilmListProps) {
               onLoad={() => handleImageLoad(film.id)}
               onError={() => handleImageError(film.id)}
               loading="eager"
+              width={posters[film.id].width}
+              height={posters[film.id].height}
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-sm font-medium truncate">{film.title}</h3>

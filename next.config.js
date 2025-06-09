@@ -12,8 +12,10 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    minimumCacheTTL: 31536000, // Cache images for 1 year
   },
+  // Disable server-side features since we're doing static export
+  trailingSlash: true,
+  reactStrictMode: true,
   experimental: {
     optimizeServerReact: true,
   },

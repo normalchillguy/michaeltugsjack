@@ -70,53 +70,54 @@ async function downloadImage(imageUrl: string, outputPath: string): Promise<void
 
 async function main() {
   console.log('Starting poster download...');
-  console.log(`Using Plex server: ${PLEX_SERVER_URL}`);
-
-  // Create posters directory if it doesn't exist
-  const postersDir = path.join(process.cwd(), 'public', 'posters');
-  if (!fs.existsSync(postersDir)) {
-    fs.mkdirSync(postersDir, { recursive: true });
+  
+  const plexServerUrl = process.env.PLEX_SERVER_URL;
+  const plexToken = process.env.PLEX_TOKEN;
+  
+  if (!plexServerUrl || !plexToken) {
+    throw new Error('Missing PLEX_SERVER_URL or PLEX_TOKEN environment variables');
   }
 
-  // Read original movies data from public/data/movies.json
-  const originalMoviesPath = path.join(process.cwd(), 'public', 'data', 'movies.json');
-  const targetMoviesPath = path.join(process.cwd(), 'src', 'data', 'movies.json');
-  
-  if (!fs.existsSync(originalMoviesPath)) {
-    console.error('❌ Error: Original movies data file not found:', originalMoviesPath);
+  console.log(`Using Plex server: ${plexServerUrl}`);
+
+  // Read the existing movies.json file
+  const moviesJsonPath = path.join(process.cwd(), 'src', 'data', 'movies.json');
+  const moviesData = JSON.parse(fs.readFileSync(moviesJsonPath, 'utf8'));
+
+  // Update the paths in the movies data to include the base path
+  moviesData.movies = moviesData.movies.map((movie: any) => ({
+    ...movie,
+    thumb: `/michaeltugsjack/posters/${movie.id}.jpg`
+  }));
+
+  // Download the first 3 posters
+  const downloadPromises = moviesData.movies.slice(0, 3).map(async (movie: any) => {
+    const posterUrl = `${plexServerUrl}/library/metadata/${movie.id}/thumb/${movie.updatedAt}?X-Plex-Token=${plexToken}`;
+    const outputPath = path.join(process.cwd(), 'public', 'posters', `${movie.id}.jpg`);
+    
+    console.log(`Downloading from: ${posterUrl.replace(plexToken, '***')}`);
+    
+    try {
+      await downloadImage(posterUrl, outputPath);
+    } catch (error) {
+      console.error(`✗ Failed to download: ${path.basename(outputPath)}`);
+      console.error(`  Status: ${(error as any)?.response?.status}`);
+      console.error(`  Message: ${(error as Error).message}`);
+      throw error;
+    }
+  });
+
+  try {
+    await Promise.all(downloadPromises);
+    
+    // Write the updated movies.json file
+    fs.writeFileSync(moviesJsonPath, JSON.stringify(moviesData, null, 2));
+    
+    console.log('✓ All posters downloaded successfully');
+  } catch (error) {
+    console.error('❌ Script failed:', error);
     process.exit(1);
   }
-
-  const moviesData = JSON.parse(fs.readFileSync(originalMoviesPath, 'utf-8'));
-
-  // Take only the first three movies
-  const selectedMovies = moviesData.movies.slice(0, 3);
-
-  // Process each movie
-  const updatedMovies = await Promise.all(
-    selectedMovies.map(async (movie: Movie) => {
-      const posterFileName = `${movie.id}.jpg`;
-      const posterPath = path.join(postersDir, posterFileName);
-      
-      // Download the poster
-      await downloadImage(movie.thumb, posterPath);
-
-      // Update the movie data with the new local path
-      return {
-        ...movie,
-        thumb: `/posters/${posterFileName}` // Update to use local path
-      };
-    })
-  );
-
-  // Update movies.json with new paths
-  const updatedMoviesData = {
-    ...moviesData,
-    movies: updatedMovies
-  };
-
-  fs.writeFileSync(targetMoviesPath, JSON.stringify(updatedMoviesData, null, 2));
-  console.log('✓ Updated movies.json with local poster paths');
 }
 
 main().catch((error) => {

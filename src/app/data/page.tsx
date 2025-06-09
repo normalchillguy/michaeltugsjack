@@ -33,6 +33,7 @@ export default function DataPage() {
   useEffect(() => {
     const loadFilms = async () => {
       try {
+        const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
         const allFilms = await plexService.getAllFilms();
         setFilms(allFilms);
         setError(null);

@@ -1,5 +1,4 @@
 import type { Film } from '@/types/film';
-import moviesData from '@/data/movies.json';
 
 class PlexService {
   private movies: Film[] = [];
@@ -22,11 +21,15 @@ class PlexService {
 
   public async initialize(): Promise<void> {
     try {
-      if (!moviesData.movies) {
+      const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
+      const response = await fetch(`${basePath}/data/movies.json`);
+      const data = await response.json();
+      
+      if (!data.movies) {
         throw new Error('Invalid data format: missing movies array');
       }
 
-      this.movies = moviesData.movies.map(this.transformPlexToFilm);
+      this.movies = data.movies.map(this.transformPlexToFilm);
       console.log(`Loaded ${this.movies.length} movies from static data`);
     } catch (error) {
       console.error('Failed to initialize Plex service:', error);
@@ -60,4 +63,5 @@ class PlexService {
   }
 }
 
-export default new PlexService(); 
+const plexService = new PlexService();
+export default plexService; 

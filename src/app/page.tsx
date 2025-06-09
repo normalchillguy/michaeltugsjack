@@ -17,8 +17,9 @@ export default function Home() {
   useEffect(() => {
     const loadFilms = async () => {
       try {
-        // For now, we'll load the static data
-        const response = await fetch('/data/movies.json');
+        // Use the correct path based on environment
+        const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
+        const response = await fetch(`${basePath}/data/movies.json`);
         const data = await response.json();
         setFilms(data.movies);
         setError(null);

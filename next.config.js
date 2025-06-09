@@ -6,10 +6,13 @@ const nextConfig = {
   basePath: isProd ? '/michaeltugsjack' : '',
   images: {
     unoptimized: true,
+    remotePatterns: [],
   },
   // Ensure trailing slashes for consistent paths
   trailingSlash: true,
   reactStrictMode: true,
+  // Properly handle static assets
+  assetPrefix: isProd ? '/michaeltugsjack/' : '',
 }
 
 module.exports = nextConfig 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import type { Film } from '@/types/film';
 import FilmDetail from './FilmDetail';
 import LoadingClapper from '@/components/LoadingClapper';
@@ -37,17 +38,17 @@ export default function FilmList({ films }: FilmListProps) {
                 <LoadingClapper />
               </div>
             )}
-            <img
-              src={posters[film.id].src}
+            <Image
+              src={posters[film.id]}
               alt={`${film.title} poster`}
-              className={`w-full h-full object-cover ${
+              className={`object-cover ${
                 loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
               }`}
               onLoad={() => handleImageLoad(film.id)}
               onError={() => handleImageError(film.id)}
-              loading="eager"
-              width={posters[film.id].width}
-              height={posters[film.id].height}
+              priority
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-sm font-medium truncate">{film.title}</h3>

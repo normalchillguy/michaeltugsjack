@@ -4,19 +4,12 @@ export interface Film {
   year: number;
   summary: string;
   thumb: string;
-  art: string;
   duration: number;
-  rating: number;
-  contentRating: string;
-  studio: string;
+  addedAt: number;
+  contentRating?: string;
+  rating?: number;
   genres: string[];
   directors: string[];
-  writers: string[];
-  actors: string[];
-  addedAt: number;
-  updatedAt: number;
-  lastViewedAt?: number;
-  viewCount: number;
 }
 
 export type SortField = 'releaseDate' | 'dateAdded' | 'title' | 'duration';

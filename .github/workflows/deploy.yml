@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PLEX_TOKEN: ${{ secrets.PLEX_TOKEN }}
+      PLEX_SERVER_URL: ${{ secrets.PLEX_SERVER_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +32,11 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+      
+      - name: Create env file
+        run: |
+          echo "PLEX_TOKEN=${{ secrets.PLEX_TOKEN }}" > .env
+          echo "PLEX_SERVER_URL=${{ secrets.PLEX_SERVER_URL }}" >> .env
       
       - name: Build with Next.js
         run: npm run build

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { Film } from '@/types/film';
+import type { Film } from '@/types/film';
 import LoadingClapper from '@/components/LoadingClapper';
 
 interface FilmDetailProps {
@@ -9,115 +9,118 @@ interface FilmDetailProps {
 }
 
 export default function FilmDetail({ film, onClose }: FilmDetailProps) {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
-  // Format date to match the list view format
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const day = date.getDate();
-    const month = date.toLocaleDateString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
+  const handleImageLoad = () => {
+    setImageLoading(false);
   };
 
-  // Format duration in hours and minutes
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoading(false);
+  };
+
   const formatDuration = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes.toString().padStart(2, '0')}min`;
+    return `${hours}h ${remainingMinutes}m`;
   };
 
-  // Close on backdrop click, but not when clicking the content
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
-
-  // Close on Escape key press
-  React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
-    >
-      <div className="bg-[#1F1C17] max-w-4xl w-full max-h-[90vh] overflow-hidden flex">
-        <div className="hidden md:block md:w-[300px] flex-shrink-0 h-full bg-[#1F1C17] relative">
-          {!isImageLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <LoadingClapper className="scale-75" />
-            </div>
-          )}
-          <Image
-            src={film.posterUrl}
-            alt={`${film.title} poster`}
-            width={300}
-            height={450}
-            className={`object-cover w-full h-full transition-opacity duration-200 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            priority={true}
-            onLoad={() => setIsImageLoaded(true)}
-          />
-        </div>
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-6">
+            <h2 className="text-2xl font-bold">{film.title}</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+          </div>
 
-        <div className="flex-grow p-6 overflow-y-auto relative">
-          <button 
-            onClick={onClose}
-            className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-[#E5A00D]">{film.title}</h2>
-              <p className="text-sm text-gray-400 mt-1">Directed by {film.director}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="relative aspect-[2/3] bg-gray-800 rounded overflow-hidden">
+              {imageLoading && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <LoadingClapper />
+                </div>
+              )}
+              <Image
+                src={film.thumb}
+                alt={`${film.title} poster`}
+                width={300}
+                height={450}
+                className={`w-full h-full object-cover ${
+                  imageLoading ? 'opacity-0' : 'opacity-100'
+                }`}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+              />
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <p className="text-gray-400">
-                  <span className="text-[#E5A00D]">Released:</span> {formatDate(film.releaseDate)}
-                </p>
-                <p className="text-gray-400">
-                  <span className="text-[#E5A00D]">Added:</span> {formatDate(film.dateAdded)}
-                </p>
-                <p className="text-gray-400">
-                  {formatDuration(film.duration)}
-                </p>
-                {film.contentRating && (
-                  <p className="text-gray-400">{film.contentRating}</p>
-                )}
-                {film.genres && film.genres.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Overview</h3>
+                <p className="text-gray-300">{film.summary}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-medium text-gray-400">Year</h4>
+                  <p>{film.year}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-400">Duration</h4>
+                  <p>{formatDuration(Math.floor(film.duration / 60000))}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-400">Rating</h4>
+                  <p>{film.rating ? film.rating.toFixed(1) : 'Not rated'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-400">Content Rating</h4>
+                  <p>{film.contentRating || 'Not rated'}</p>
+                </div>
+              </div>
+
+              {film.directors.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-gray-400">Director{film.directors.length > 1 ? 's' : ''}</h4>
+                  <p>{film.directors.join(', ')}</p>
+                </div>
+              )}
+
+              {film.genres.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-gray-400">Genres</h4>
                   <div className="flex flex-wrap gap-2">
-                    {film.genres.map((genre, index) => (
+                    {film.genres.map(genre => (
                       <span
-                        key={index}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs bg-[#E5A00D]/10 border border-[#E5A00D]/30 text-[#E5A00D]"
+                        key={genre}
+                        className="px-2 py-1 bg-gray-800 rounded text-sm"
                       >
                         {genre}
                       </span>
                     ))}
                   </div>
-                )}
-              </div>
-
-              {film.description && (
-                <div>
-                  <p className="text-gray-300">{film.description}</p>
                 </div>
               )}
+
+              <div>
+                <h4 className="font-medium text-gray-400">Added to Library</h4>
+                <p>{formatDate(film.addedAt)}</p>
+              </div>
             </div>
           </div>
         </div>

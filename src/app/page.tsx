@@ -1,27 +1,29 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Film, SortField, SortOrder } from '@/types/film';
-import { plexService } from '@/services/plexService';
+import plexService from '@/services/plexService';
+import type { Film } from '@/types/film';
 import FilmList from '@/components/films/FilmList';
 import SortControls from '@/components/SortControls';
 import Link from 'next/link';
 import LoadingClapper from '@/components/LoadingClapper';
 
+type SortField = 'title' | 'year' | 'addedAt';
+type SortOrder = 'asc' | 'desc';
+
 export default function Home() {
   const [films, setFilms] = useState<Film[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>('dateAdded');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortField, setSortField] = useState<SortField>('title');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
-    const fetchFilms = async () => {
+    const loadFilms = async () => {
       try {
-        setLoading(true);
+        const allFilms = await plexService.getAllFilms();
+        setFilms(allFilms);
         setError(null);
-        const fetchedFilms = await plexService.getAllFilms();
-        setFilms(fetchedFilms);
       } catch (err) {
         setError('Failed to fetch films. Please try again later.');
         console.error('Error fetching films:', err);
@@ -30,50 +32,36 @@ export default function Home() {
       }
     };
 
-    fetchFilms();
+    loadFilms();
   }, []);
 
-  const handleSortChange = (field: SortField, order: SortOrder) => {
-    setSortField(field);
-    setSortOrder(order);
-  };
+  const sortedFilms = [...films].sort((a, b) => {
+    let comparison = 0;
+    
+    switch (sortField) {
+      case 'title':
+        comparison = a.title.localeCompare(b.title);
+        break;
+      case 'year':
+        comparison = (a.year || 0) - (b.year || 0);
+        break;
+      case 'addedAt':
+        comparison = (a.addedAt || 0) - (b.addedAt || 0);
+        break;
+      default:
+        comparison = 0;
+    }
 
-  const sortFilms = (filmsToSort: Film[]): Film[] => {
-    return [...filmsToSort].sort((a, b) => {
-      let comparison = 0;
-      
-      switch (sortField) {
-        case 'releaseDate':
-          comparison = new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime();
-          break;
-        case 'dateAdded':
-          comparison = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
-          break;
-        case 'title':
-          comparison = a.title.localeCompare(b.title);
-          break;
-        case 'duration':
-          comparison = a.duration - b.duration;
-          break;
-      }
-
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
-  };
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#2D2510] flex items-center justify-center">
-        <LoadingClapper />
-      </div>
-    );
+    return <LoadingClapper />;
   }
 
   if (error) {
-    return <div className="container mx-auto p-4 text-red-500">{error}</div>;
+    return <div className="text-red-500">{error}</div>;
   }
-
-  const sortedFilms = sortFilms(films);
 
   return (
     <main className="min-h-screen bg-[#2D2510]">
@@ -90,7 +78,8 @@ export default function Home() {
           <SortControls
             sortField={sortField}
             sortOrder={sortOrder}
-            onSortChange={handleSortChange}
+            onSortFieldChange={setSortField}
+            onSortOrderChange={setSortOrder}
           />
         </div>
       </div>

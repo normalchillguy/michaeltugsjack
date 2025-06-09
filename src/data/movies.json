@@ -1,0 +1,94 @@
+{
+  "lastUpdated": "2025-06-09T02:22:27.842Z",
+  "movies": [
+    {
+      "id": "36818",
+      "title": "10 Cloverfield Lane",
+      "year": 2016,
+      "summary": "After a catastrophic car crash, a young woman wakes up in a survivalist's underground bunker, where he claims to have saved her from an apocalyptic attack that has left the outside world uninhabitable.",
+      "thumb": "/posters/36818.jpg",
+      "art": "/library/metadata/36818/art/1748243121",
+      "duration": 6214835,
+      "rating": 9.1,
+      "contentRating": "PG-13",
+      "studio": "Bad Robot",
+      "genres": [
+        "Science Fiction",
+        "Horror"
+      ],
+      "directors": [
+        "Dan Trachtenberg"
+      ],
+      "writers": [
+        "Josh Campbell",
+        "Matthew Stuecken"
+      ],
+      "actors": [
+        "John Goodman",
+        "Mary Elizabeth Winstead",
+        "John Gallagher Jr."
+      ],
+      "addedAt": 1748222686,
+      "updatedAt": 1748243121
+    },
+    {
+      "id": "1",
+      "title": "12 Monkeys",
+      "year": 1995,
+      "summary": "In a future world devastated by disease, a convict is sent back in time to gather information about the man-made virus that wiped out most of the human population on the planet.",
+      "thumb": "/posters/1.jpg",
+      "art": "/library/metadata/1/art/1748070111",
+      "duration": 7774851,
+      "rating": 8.8,
+      "contentRating": "R",
+      "studio": "Universal Pictures",
+      "genres": [
+        "Science Fiction",
+        "Thriller"
+      ],
+      "directors": [
+        "Terry Gilliam"
+      ],
+      "writers": [
+        "Janet Peoples",
+        "David Webb Peoples"
+      ],
+      "actors": [
+        "Bruce Willis",
+        "Madeleine Stowe",
+        "Brad Pitt"
+      ],
+      "addedAt": 1701358696,
+      "updatedAt": 1748070111
+    },
+    {
+      "id": "3",
+      "title": "28 Days Later",
+      "year": 2002,
+      "summary": "Twenty-eight days after a killer virus was accidentally unleashed from a British research facility, a small group of London survivors are caught in a desperate struggle to protect themselves from the infected. Carried by animals and humans, the virus turns those it infects into homicidal maniacs -- and it's absolutely impossible to contain.",
+      "thumb": "/posters/3.jpg",
+      "art": "/library/metadata/3/art/1747785164",
+      "duration": 6787657,
+      "rating": 8.7,
+      "contentRating": "R",
+      "studio": "DNA Films",
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "directors": [
+        "Danny Boyle"
+      ],
+      "writers": [
+        "Alex Garland"
+      ],
+      "actors": [
+        "Cillian Murphy",
+        "Naomie Harris",
+        "Brendan Gleeson"
+      ],
+      "addedAt": 1655184986,
+      "updatedAt": 1747785164
+    }
+  ]
+}

@@ -1,26 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
+  Legend,
   Tooltip,
 } from 'chart.js';
-import { plexService } from '@/services/plexService';
+import plexService from '@/services/plexService';
 import type { Film } from '@/types/film';
 import Link from 'next/link';
 import LoadingClapper from '@/components/LoadingClapper';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
-  Tooltip,
+  Legend,
+  Tooltip
 );
 
 export default function DataPage() {
@@ -29,12 +31,11 @@ export default function DataPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchFilms = async () => {
+    const loadFilms = async () => {
       try {
-        setLoading(true);
+        const allFilms = await plexService.getAllFilms();
+        setFilms(allFilms);
         setError(null);
-        const fetchedFilms = await plexService.getAllFilms();
-        setFilms(fetchedFilms);
       } catch (err) {
         setError('Failed to fetch films. Please try again later.');
         console.error('Error fetching films:', err);
@@ -43,181 +44,120 @@ export default function DataPage() {
       }
     };
 
-    fetchFilms();
+    loadFilms();
   }, []);
 
-  // Create a map to count films by year
-  const filmsByYear = films.reduce((acc: { [key: string]: number }, film: Film) => {
-    const year = new Date(film.releaseDate).getFullYear();
-    acc[year] = (acc[year] || 0) + 1;
+  if (loading) {
+    return <LoadingClapper />;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
+  // Calculate statistics
+  const totalFilms = films.length;
+  const averageRating = films.reduce((sum, film) => sum + (film.rating || 0), 0) / totalFilms;
+
+  // Calculate director statistics
+  const directorCounts = films.reduce((acc, film) => {
+    film.directors.forEach(director => {
+      acc[director] = (acc[director] || 0) + 1;
+    });
     return acc;
-  }, {});
+  }, {} as Record<string, number>);
 
-  // Get all years and sort them
-  const years = Object.keys(filmsByYear).sort((a, b) => Number(a) - Number(b));
+  const topDirectors = Object.entries(directorCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10);
 
-  const chartData = {
-    labels: years,
+  // Calculate genre statistics
+  const genreCounts = films.reduce((acc, film) => {
+    film.genres.forEach(genre => {
+      acc[genre] = (acc[genre] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<string, number>);
+
+  const topGenres = Object.entries(genreCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10);
+
+  // Chart data
+  const genreChartData = {
+    labels: topGenres.map(([genre]) => genre),
     datasets: [
       {
-        data: years.map(year => filmsByYear[year]),
+        label: 'Number of Films',
+        data: topGenres.map(([, count]) => count),
         backgroundColor: '#E5A00D',
-        borderColor: '#E5A00D',
-        borderWidth: 1,
+      },
+    ],
+  };
+
+  const directorChartData = {
+    labels: topDirectors.map(([director]) => director),
+    datasets: [
+      {
+        label: 'Number of Films',
+        data: topDirectors.map(([, count]) => count),
+        backgroundColor: '#E5A00D',
       },
     ],
   };
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
       },
       title: {
         display: true,
-        text: '#MichaelTugsJack films by release year',
-        color: '#E5A00D',
-        font: {
-          size: 16,
-          weight: 'bold' as const,
-        },
-        padding: {
-          top: 10,
-          bottom: 20
-        }
-      },
-      tooltip: {
-        backgroundColor: '#1F1C17',
-        titleColor: '#E5A00D',
-        bodyColor: '#fff',
-        borderColor: '#E5A00D',
-        borderWidth: 1,
-        padding: 10,
-        displayColors: false,
-        callbacks: {
-          title: (tooltipItems: any) => `Year: ${tooltipItems[0].label}`,
-          label: (context: any) => `Films: ${context.raw}`,
-        },
+        color: '#FFFFFF',
       },
     },
     scales: {
       x: {
-        grid: {
-          color: '#ffffff10',
-        },
         ticks: {
-          color: '#ffffff80',
-          maxRotation: 45,
-          minRotation: 45,
-          font: {
-            size: 11
-          },
-          autoSkip: true,
-          maxTicksLimit: 15,
+          color: '#FFFFFF',
         },
-        title: {
-          display: true,
-          text: 'Release Year',
-          color: '#ffffff80',
-          font: {
-            size: 12
-          },
-          padding: { top: 10 }
+        grid: {
+          color: '#333333',
         },
       },
       y: {
-        grid: {
-          color: '#ffffff10',
-        },
         ticks: {
-          color: '#ffffff80',
-          font: {
-            size: 11
-          },
+          color: '#FFFFFF',
         },
-        title: {
-          display: true,
-          text: 'Number of Films',
-          color: '#ffffff80',
-          font: {
-            size: 12
-          },
-          padding: { bottom: 10 }
+        grid: {
+          color: '#333333',
         },
-        beginAtZero: true,
       },
     },
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#2D2510]">
-        <header className="sticky top-0 bg-[#1F1C17] border-b border-[#E5A00D] z-50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Link 
-              href="/"
-              className="text-white hover:text-[#E5A00D] transition-colors"
-            >
-              ← Back to Films
-            </Link>
-            <h1 className="text-2xl font-bold text-[#E5A00D]">
-              #MichaelTugsJack data
-            </h1>
-          </div>
-        </header>
-        <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[calc(100vh-73px)]">
-          <LoadingClapper />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#2D2510]">
-        <header className="sticky top-0 bg-[#1F1C17] border-b border-[#E5A00D] z-50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Link 
-              href="/"
-              className="text-white hover:text-[#E5A00D] transition-colors"
-            >
-              ← Back to Films
-            </Link>
-            <h1 className="text-2xl font-bold text-[#E5A00D]">
-              #MichaelTugsJack data
-            </h1>
-          </div>
-        </header>
-        <div className="container mx-auto px-4 py-6">
-          <div className="text-red-500">{error}</div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-[#2D2510]">
-      <header className="sticky top-0 bg-[#1F1C17] border-b border-[#E5A00D] z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link 
-            href="/"
-            className="text-white hover:text-[#E5A00D] transition-colors"
-          >
-            ← Back to Films
-          </Link>
-          <h1 className="text-2xl font-bold text-[#E5A00D]">
-            #MichaelTugsJack data
-          </h1>
-        </div>
-      </header>
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Library Statistics</h1>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="bg-[#1F1C17] p-4 sm:p-6">
-          <div className="h-[400px] sm:h-[600px]">
-            <Bar data={chartData} options={chartOptions} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Overview</h2>
+          <div className="space-y-2">
+            <p>Total Films: {totalFilms}</p>
+            <p>Average Rating: {averageRating.toFixed(1)}</p>
           </div>
+        </div>
+
+        <div className="bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Top Genres</h2>
+          <Bar data={genreChartData} options={chartOptions} />
+        </div>
+
+        <div className="bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Top Directors</h2>
+          <Bar data={directorChartData} options={chartOptions} />
         </div>
       </div>
     </main>

@@ -1,39 +1,32 @@
 import type { Film } from '@/types/film';
+import moviesData from '@/data/movies.json';
 
 class PlexService {
-  private movies: Film[] | null = null;
+  private movies: Film[] = [];
 
-  private transformPlexToFilm(movie: any): Film {
+  private transformPlexToFilm(plexMovie: any): Film {
     return {
-      id: movie.id,
-      title: movie.title,
-      year: movie.year,
-      summary: movie.summary,
-      thumb: movie.thumb,
-      art: movie.art,
-      duration: movie.duration,
-      rating: movie.rating,
-      contentRating: movie.contentRating,
-      studio: movie.studio,
-      genres: movie.genres,
-      directors: movie.directors,
-      writers: movie.writers,
-      actors: movie.actors,
-      addedAt: movie.addedAt,
-      updatedAt: movie.updatedAt,
-      lastViewedAt: movie.lastViewedAt,
-      viewCount: movie.viewCount,
+      id: plexMovie.id,
+      title: plexMovie.title,
+      year: plexMovie.year,
+      summary: plexMovie.summary,
+      thumb: plexMovie.thumb,
+      duration: plexMovie.duration,
+      addedAt: plexMovie.addedAt,
+      contentRating: plexMovie.contentRating,
+      rating: plexMovie.rating,
+      genres: plexMovie.genres || [],
+      directors: plexMovie.directors || [],
     };
   }
 
-  async initialize(): Promise<void> {
+  public async initialize(): Promise<void> {
     try {
-      const response = await fetch('/michaeltugsjack/data/movies.json');
-      if (!response.ok) {
-        throw new Error('Failed to fetch movie data');
+      if (!moviesData.movies) {
+        throw new Error('Invalid data format: missing movies array');
       }
-      const data = await response.json();
-      this.movies = data.movies.map(this.transformPlexToFilm);
+
+      this.movies = moviesData.movies.map(this.transformPlexToFilm);
       console.log(`Loaded ${this.movies.length} movies from static data`);
     } catch (error) {
       console.error('Failed to initialize Plex service:', error);
@@ -41,25 +34,28 @@ class PlexService {
     }
   }
 
-  async getAllFilms(): Promise<Film[]> {
-    if (!this.movies) {
+  public async getAllFilms(): Promise<Film[]> {
+    if (this.movies.length === 0) {
       await this.initialize();
     }
-    return this.movies || [];
+    return this.movies;
   }
 
-  async searchFilms(query: string): Promise<Film[]> {
-    if (!this.movies) {
+  public async searchFilms(query: string): Promise<Film[]> {
+    if (this.movies.length === 0) {
       await this.initialize();
     }
-    
+
+    if (!query) {
+      return this.movies;
+    }
+
     const normalizedQuery = query.toLowerCase();
-    return (this.movies || []).filter(movie => 
+    return this.movies.filter(movie =>
       movie.title.toLowerCase().includes(normalizedQuery) ||
-      movie.summary?.toLowerCase().includes(normalizedQuery) ||
+      movie.summary.toLowerCase().includes(normalizedQuery) ||
       movie.genres.some(genre => genre.toLowerCase().includes(normalizedQuery)) ||
-      movie.directors.some(director => director.toLowerCase().includes(normalizedQuery)) ||
-      movie.actors.some(actor => actor.toLowerCase().includes(normalizedQuery))
+      movie.directors.some(director => director.toLowerCase().includes(normalizedQuery))
     );
   }
 }

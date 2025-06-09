@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',  // Enables static HTML export
+  basePath: '/michaeltugsjack', // Your repository name
   images: {
+    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: 'http',

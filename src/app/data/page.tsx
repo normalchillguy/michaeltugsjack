@@ -86,7 +86,7 @@ export default function DataPage() {
     labels: yearRange,
     datasets: [
       {
-        label: 'Number of Films',
+        label: 'Films',
         data: yearCounts.map(y => y.count),
         backgroundColor: '#E5A00D',
         borderColor: '#E5A00D',
@@ -103,23 +103,22 @@ export default function DataPage() {
         display: false,
       },
       tooltip: {
+        backgroundColor: '#1F1C17',
+        titleColor: '#E5A00D',
+        bodyColor: '#FFFFFF',
+        padding: 16,
         callbacks: {
           title: (tooltipItems: any[]) => {
             const year = tooltipItems[0].label;
-            return `Films from ${year}`;
+            const count = tooltipItems[0].raw;
+            return `${count} film${count !== 1 ? 's' : ''} from ${year}`;
           },
           label: (context: any) => {
             const year = parseInt(context.label);
             const yearData = yearCounts.find(y => y.year === year);
             if (!yearData) return '';
             
-            const lines = [
-              `Total Films: ${yearData.count}`,
-              '',
-              'Films:',
-              ...yearData.films.map(film => `• ${film.title}`),
-            ];
-            return lines;
+            return yearData.films.map(film => film.title);
           },
         },
       },

@@ -11,7 +11,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const basePath = isProd ? '/michaeltugsjack/' : '';
 
 export const metadata: Metadata = {
-  title: "#MichaelTugsJack Films",
+  title: "#MichaelTugsJack",
   description: "A collection of films from the #MichaelTugsJack Plex server",
   icons: {
     icon: [

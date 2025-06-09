@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Image from 'next/image';
 import type { Film } from '@/types/film';
 import FilmDetail from './FilmDetail';
 import LoadingClapper from '@/components/LoadingClapper';
@@ -23,6 +22,9 @@ export default function FilmList({ films }: FilmListProps) {
     setLoadingStates(prev => ({ ...prev, [filmId]: false }));
   };
 
+  // Get the base path based on environment
+  const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
+
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -37,19 +39,16 @@ export default function FilmList({ films }: FilmListProps) {
                 <LoadingClapper />
               </div>
             )}
-            <div className="relative w-full h-full">
-              <Image
-                src={`/posters/${film.id}.jpg`}
-                alt={`${film.title} poster`}
-                fill
-                className={`object-cover ${
-                  loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
-                }`}
-                onLoad={() => handleImageLoad(film.id)}
-                onError={() => handleImageError(film.id)}
-                priority={true}
-              />
-            </div>
+            <img
+              src={`${basePath}/posters/${film.id}.jpg`}
+              alt={`${film.title} poster`}
+              className={`w-full h-full object-cover ${
+                loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
+              }`}
+              onLoad={() => handleImageLoad(film.id)}
+              onError={() => handleImageError(film.id)}
+              loading="eager"
+            />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-sm font-medium truncate">{film.title}</h3>
               <p className="text-xs text-gray-300">{film.year}</p>

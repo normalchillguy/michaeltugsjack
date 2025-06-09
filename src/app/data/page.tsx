@@ -49,77 +49,88 @@ export default function DataPage() {
   }, []);
 
   if (loading) {
-    return <LoadingClapper />;
+    return (
+      <div className="min-h-screen bg-[#2D2510] flex items-center justify-center">
+        <LoadingClapper />
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <div className="min-h-screen bg-[#2D2510] flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   }
 
-  // Calculate statistics
-  const totalFilms = films.length;
-  const averageRating = films.reduce((sum, film) => sum + (film.rating || 0), 0) / totalFilms;
+  // Calculate year range and counts
+  const years = films.map(film => film.year || 0).filter(year => year > 0);
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  
+  // Create an array of all years between min and max
+  const yearRange = Array.from(
+    { length: maxYear - minYear + 1 },
+    (_, i) => minYear + i
+  );
 
-  // Calculate director statistics
-  const directorCounts = films.reduce((acc, film) => {
-    film.directors.forEach(director => {
-      acc[director] = (acc[director] || 0) + 1;
-    });
-    return acc;
-  }, {} as Record<string, number>);
+  // Count films per year
+  const yearCounts = yearRange.map(year => ({
+    year,
+    count: films.filter(film => film.year === year).length,
+    films: films.filter(film => film.year === year)
+  }));
 
-  const topDirectors = Object.entries(directorCounts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 10);
-
-  // Calculate genre statistics
-  const genreCounts = films.reduce((acc, film) => {
-    film.genres.forEach(genre => {
-      acc[genre] = (acc[genre] || 0) + 1;
-    });
-    return acc;
-  }, {} as Record<string, number>);
-
-  const topGenres = Object.entries(genreCounts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 10);
-
-  // Chart data
-  const genreChartData = {
-    labels: topGenres.map(([genre]) => genre),
+  const chartData = {
+    labels: yearRange,
     datasets: [
       {
         label: 'Number of Films',
-        data: topGenres.map(([, count]) => count),
+        data: yearCounts.map(y => y.count),
         backgroundColor: '#E5A00D',
-      },
-    ],
-  };
-
-  const directorChartData = {
-    labels: topDirectors.map(([director]) => director),
-    datasets: [
-      {
-        label: 'Number of Films',
-        data: topDirectors.map(([, count]) => count),
-        backgroundColor: '#E5A00D',
+        borderColor: '#E5A00D',
+        borderWidth: 1,
       },
     ],
   };
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
       },
-      title: {
-        display: true,
-        color: '#FFFFFF',
+      tooltip: {
+        callbacks: {
+          title: (tooltipItems: any[]) => {
+            const year = tooltipItems[0].label;
+            return `Films from ${year}`;
+          },
+          label: (context: any) => {
+            const year = parseInt(context.label);
+            const yearData = yearCounts.find(y => y.year === year);
+            if (!yearData) return '';
+            
+            const lines = [
+              `Total Films: ${yearData.count}`,
+              '',
+              'Films:',
+              ...yearData.films.map(film => `• ${film.title}`),
+            ];
+            return lines;
+          },
+        },
       },
     },
     scales: {
       x: {
+        title: {
+          display: true,
+          text: 'Release Year',
+          color: '#FFFFFF',
+        },
         ticks: {
           color: '#FFFFFF',
         },
@@ -128,8 +139,14 @@ export default function DataPage() {
         },
       },
       y: {
+        title: {
+          display: true,
+          text: 'Number of Films',
+          color: '#FFFFFF',
+        },
         ticks: {
           color: '#FFFFFF',
+          stepSize: 1,
         },
         grid: {
           color: '#333333',
@@ -139,26 +156,20 @@ export default function DataPage() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Library Statistics</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Overview</h2>
-          <div className="space-y-2">
-            <p>Total Films: {totalFilms}</p>
-            <p>Average Rating: {averageRating.toFixed(1)}</p>
-          </div>
+    <main className="min-h-screen bg-[#2D2510]">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-2xl font-bold text-[#E5A00D]">Films by Release Year</h1>
+          <Link 
+            href="/" 
+            className="text-[#E5A00D] hover:text-white transition-colors px-4 py-1 border border-[#E5A00D] rounded hover:bg-[#E5A00D]/10"
+          >
+            Back to Films
+          </Link>
         </div>
-
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Top Genres</h2>
-          <Bar data={genreChartData} options={chartOptions} />
-        </div>
-
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Top Directors</h2>
-          <Bar data={directorChartData} options={chartOptions} />
+        
+        <div className="bg-[#1F1C17] p-6 rounded-lg shadow-lg" style={{ height: '70vh' }}>
+          <Bar data={chartData} options={chartOptions} />
         </div>
       </div>
     </main>

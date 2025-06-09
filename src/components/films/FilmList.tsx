@@ -23,6 +23,12 @@ export default function FilmList({ films }: FilmListProps) {
     setLoadingStates(prev => ({ ...prev, [filmId]: false }));
   };
 
+  // Function to get the correct image path based on environment
+  const getImagePath = (path: string) => {
+    const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
+    return `${basePath}${path}`;
+  };
+
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -38,7 +44,7 @@ export default function FilmList({ films }: FilmListProps) {
               </div>
             )}
             <Image
-              src={film.thumb}
+              src={getImagePath(film.thumb)}
               alt={`${film.title} poster`}
               width={300}
               height={450}

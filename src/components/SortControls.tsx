@@ -17,9 +17,8 @@ export default function SortControls({
   onSortOrderChange,
 }: SortControlsProps) {
   return (
-    <div className="flex flex-wrap gap-y-2 gap-x-4 items-center text-sm w-full">
-      <label className="text-gray-400 whitespace-nowrap">Sort by:</label>
-      <div className="flex gap-2 flex-1 sm:flex-none w-full sm:w-auto">
+    <div className="flex flex-wrap gap-2 items-center text-sm w-full">
+      <div className="flex gap-2 flex-1">
         <select
           value={sortField}
           onChange={(e) => onSortFieldChange(e.target.value as SortField)}

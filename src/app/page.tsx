@@ -77,21 +77,19 @@ export default function Home() {
     <main className="min-h-screen bg-[#2D2510]">
       <div className="sticky top-0 z-10 bg-[#1F1C17] shadow-md">
         <div className="container mx-auto px-4 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-[#E5A00D] mb-4 break-words">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#E5A00D] mb-4 truncate">
             {films.length} films in the #MichaelTugsJack server
           </h1>
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <div className="flex-1">
-              <SortControls
-                sortField={sortField}
-                sortOrder={sortOrder}
-                onSortFieldChange={setSortField}
-                onSortOrderChange={setSortOrder}
-              />
-            </div>
+          <div className="flex items-center gap-4">
+            <SortControls
+              sortField={sortField}
+              sortOrder={sortOrder}
+              onSortFieldChange={setSortField}
+              onSortOrderChange={setSortOrder}
+            />
             <Link 
               href="/data" 
-              className="text-[#E5A00D] hover:text-white transition-colors px-4 py-2 border border-[#E5A00D] rounded hover:bg-[#E5A00D]/10 whitespace-nowrap"
+              className="text-[#E5A00D] hover:text-white transition-colors px-4 py-1 border border-[#E5A00D] rounded hover:bg-[#E5A00D]/10 whitespace-nowrap shrink-0"
             >
               View Data
             </Link>

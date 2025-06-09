@@ -37,18 +37,19 @@ export default function FilmList({ films }: FilmListProps) {
                 <LoadingClapper />
               </div>
             )}
-            <Image
-              src={film.thumb}
-              alt={`${film.title} poster`}
-              width={300}
-              height={450}
-              className={`w-full h-full object-cover ${
-                loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
-              }`}
-              onLoad={() => handleImageLoad(film.id)}
-              onError={() => handleImageError(film.id)}
-              priority={true}
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={`/posters/${film.id}.jpg`}
+                alt={`${film.title} poster`}
+                fill
+                className={`object-cover ${
+                  loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'
+                }`}
+                onLoad={() => handleImageLoad(film.id)}
+                onError={() => handleImageError(film.id)}
+                priority={true}
+              />
+            </div>
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-sm font-medium truncate">{film.title}</h3>
               <p className="text-xs text-gray-300">{film.year}</p>

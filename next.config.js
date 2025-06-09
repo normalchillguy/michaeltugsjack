@@ -4,9 +4,13 @@ const nextConfig = {
   basePath: process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '',
   images: {
     unoptimized: true, // Required for static export
-    loader: 'default',
-    path: '',
-    disableStaticImages: false,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'normalchillguy.github.io',
+        pathname: '/michaeltugsjack/**',
+      },
+    ],
   },
   // Disable server-side features since we're doing static export
   trailingSlash: true,

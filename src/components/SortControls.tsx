@@ -17,13 +17,13 @@ export default function SortControls({
   onSortOrderChange,
 }: SortControlsProps) {
   return (
-    <div className="flex flex-wrap gap-y-2 gap-x-4 items-center text-sm">
+    <div className="flex flex-wrap gap-y-2 gap-x-4 items-center text-sm w-full">
       <label className="text-gray-400 whitespace-nowrap">Sort by:</label>
-      <div className="flex gap-2 flex-1 sm:flex-none">
+      <div className="flex gap-2 flex-1 sm:flex-none w-full sm:w-auto">
         <select
           value={sortField}
           onChange={(e) => onSortFieldChange(e.target.value as SortField)}
-          className="flex-1 sm:flex-none bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
+          className="flex-1 bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
         >
           <option value="title">Title</option>
           <option value="year">Release Date</option>
@@ -33,7 +33,7 @@ export default function SortControls({
         <select
           value={sortOrder}
           onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}
-          className="bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
+          className="bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D] min-w-[120px]"
         >
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>

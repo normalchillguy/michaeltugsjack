@@ -1,56 +1,98 @@
 import type { Film, FilmStats } from '@/types/film';
 
+const PLEX_URL = 'http://10.0.0.111:32400';
+const PLEX_TOKEN = 'FhDk5Qq-uyHbazmy9Uzj';
+
+interface PlexRequestOptions {
+  endpoint: string;
+  isPhoto?: boolean;
+  additionalParams?: Record<string, string>;
+}
+
 class PlexService {
+  private librarySection: string | null = null;
   private baseUrl: string;
-  private librarySection?: string;
-  private initialized: boolean = false;
 
   constructor() {
     this.baseUrl = '/api/plex';
   }
 
-  private async fetchFromPlex(endpoint: string): Promise<any> {
-    const response = await fetch(`${this.baseUrl}?endpoint=${encodeURIComponent(endpoint)}`);
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Plex API error:', {
-        status: response.status,
-        statusText: response.statusText,
-        endpoint,
-        errorData
+  private async fetchFromPlex({ endpoint, isPhoto = false, additionalParams = {} }: PlexRequestOptions) {
+    try {
+      // Build the Plex URL with all query parameters
+      const plexUrl = new URL(PLEX_URL + endpoint);
+      
+      // Add the token
+      plexUrl.searchParams.append('X-Plex-Token', PLEX_TOKEN);
+      
+      // Add additional parameters
+      Object.entries(additionalParams).forEach(([key, value]) => {
+        plexUrl.searchParams.append(key, value);
       });
-      throw new Error(errorData.error || `Plex API error: ${response.statusText}`);
+
+      // Make the request to Plex with a timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(plexUrl.toString(), {
+        headers: {
+          'Accept': isPhoto ? 'image/*' : 'application/json',
+          'X-Plex-Client-Identifier': 'letterboxd-dashboard',
+          'X-Plex-Platform': 'Web',
+          'X-Plex-Platform-Version': '1.0.0',
+          'X-Plex-Product': 'Letterboxd Dashboard',
+          'X-Plex-Version': '1.0.0'
+        },
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`Plex API error: ${response.statusText}`);
+      }
+
+      // For photos, return the response directly
+      if (isPhoto) {
+        return response;
+      }
+
+      // For other requests, return JSON
+      return await response.json();
+    } catch (error) {
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new Error('Could not connect to Plex server. Please check if the server is running and accessible.');
+      }
+
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request to Plex server timed out');
+      }
+
+      throw error;
     }
-    
-    return response.json();
   }
 
   async initialize(): Promise<void> {
-    if (this.initialized) return;
-
     try {
       // First try to connect to the root endpoint to verify connectivity
-      const rootResponse = await this.fetchFromPlex('/');
+      const rootResponse = await this.fetchFromPlex({ endpoint: '/' });
       console.log('Successfully connected to Plex server');
 
       // Then get library sections
-      const sectionsResponse = await this.fetchFromPlex('/library/sections');
+      const sectionsResponse = await this.fetchFromPlex({ endpoint: '/library/sections' });
       console.log('Retrieved library sections:', sectionsResponse);
 
-      const sections = sectionsResponse.MediaContainer?.Directory;
-      if (!sections) {
-        throw new Error('No library sections found in response');
+      // Find the movie library section
+      const movieSection = sectionsResponse.MediaContainer?.Directory?.find(
+        (section: any) => section.type === 'movie'
+      );
+
+      if (!movieSection) {
+        throw new Error('No movie library found in Plex server');
       }
 
-      const movieSection = sections.find((section: any) => section.type === 'movie');
-      if (movieSection) {
-        this.librarySection = movieSection.key;
-        console.log('Found movie library section:', this.librarySection);
-        this.initialized = true;
-      } else {
-        throw new Error('No movie library found');
-      }
+      this.librarySection = movieSection.key;
+      console.log('Using library section:', this.librarySection);
     } catch (error) {
       console.error('Failed to initialize Plex service:', error);
       throw error;
@@ -88,12 +130,12 @@ class PlexService {
   }
 
   async getAllFilms(): Promise<Film[]> {
-    if (!this.initialized) {
+    if (!this.librarySection) {
       await this.initialize();
     }
     
     try {
-      const response = await this.fetchFromPlex(`/library/sections/${this.librarySection}/all`);
+      const response = await this.fetchFromPlex({ endpoint: `/library/sections/${this.librarySection}/all` });
       return (response.MediaContainer?.Metadata || []).map((item: any) => this.transformPlexToFilm(item));
     } catch (error) {
       console.error('Failed to fetch films:', error);
@@ -140,14 +182,12 @@ class PlexService {
   }
 
   async searchFilms(query: string): Promise<Film[]> {
-    if (!this.initialized) {
+    if (!this.librarySection) {
       await this.initialize();
     }
 
     try {
-      const response = await this.fetchFromPlex(
-        `/library/sections/${this.librarySection}/search?query=${encodeURIComponent(query)}`
-      );
+      const response = await this.fetchFromPlex({ endpoint: `/library/sections/${this.librarySection}/search?query=${encodeURIComponent(query)}` });
       return (response.MediaContainer?.Metadata || []).map((item: any) => this.transformPlexToFilm(item));
     } catch (error) {
       console.error('Failed to search films:', error);

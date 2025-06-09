@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Film } from '@/types/film';
 import FilmDetail from './FilmDetail';
 import LoadingClapper from '@/components/LoadingClapper';
+import { getPosterPath } from '@/utils/paths';
 
 interface FilmListProps {
   films: Film[];
@@ -22,9 +23,6 @@ export default function FilmList({ films }: FilmListProps) {
     setLoadingStates(prev => ({ ...prev, [filmId]: false }));
   };
 
-  // Get the base path based on environment
-  const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
-
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -40,7 +38,7 @@ export default function FilmList({ films }: FilmListProps) {
               </div>
             )}
             <img
-              src={`${basePath}/posters/${film.id}.jpg`}
+              src={getPosterPath(film.id)}
               alt={`${film.title} poster`}
               className={`w-full h-full object-cover ${
                 loadingStates[film.id] !== false ? 'opacity-0' : 'opacity-100'

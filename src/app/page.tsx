@@ -1,15 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import plexService from '@/services/plexService';
 import type { Film } from '@/types/film';
 import FilmList from '@/components/films/FilmList';
-import SortControls from '@/components/SortControls';
+import SortControls, { SortField, SortOrder } from '@/components/SortControls';
 import Link from 'next/link';
 import LoadingClapper from '@/components/LoadingClapper';
-
-type SortField = 'title' | 'year' | 'addedAt';
-type SortOrder = 'asc' | 'desc';
 
 export default function Home() {
   const [films, setFilms] = useState<Film[]>([]);
@@ -21,8 +17,10 @@ export default function Home() {
   useEffect(() => {
     const loadFilms = async () => {
       try {
-        const allFilms = await plexService.getAllFilms();
-        setFilms(allFilms);
+        // For now, we'll load the static data
+        const response = await fetch('/data/movies.json');
+        const data = await response.json();
+        setFilms(data.movies);
         setError(null);
       } catch (err) {
         setError('Failed to fetch films. Please try again later.');
@@ -48,6 +46,9 @@ export default function Home() {
       case 'addedAt':
         comparison = (a.addedAt || 0) - (b.addedAt || 0);
         break;
+      case 'duration':
+        comparison = (a.duration || 0) - (b.duration || 0);
+        break;
       default:
         comparison = 0;
     }
@@ -56,11 +57,19 @@ export default function Home() {
   });
 
   if (loading) {
-    return <LoadingClapper />;
+    return (
+      <div className="min-h-screen bg-[#2D2510] flex items-center justify-center">
+        <LoadingClapper />
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <div className="min-h-screen bg-[#2D2510] flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
@@ -71,19 +80,24 @@ export default function Home() {
             <h1 className="text-xl sm:text-2xl font-bold text-[#E5A00D]">
               {films.length} films in the #MichaelTugsJack server
             </h1>
-            <Link href="/data" className="text-[#E5A00D] hover:text-white transition-colors">
+            <Link 
+              href="/data" 
+              className="text-[#E5A00D] hover:text-white transition-colors"
+            >
               View Data
             </Link>
           </div>
-          <SortControls
-            sortField={sortField}
-            sortOrder={sortOrder}
-            onSortFieldChange={setSortField}
-            onSortOrderChange={setSortOrder}
-          />
+          <div className="flex gap-4 items-center">
+            <SortControls
+              sortField={sortField}
+              sortOrder={sortOrder}
+              onSortFieldChange={setSortField}
+              onSortOrderChange={setSortOrder}
+            />
+          </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 pb-4 pt-6">
+      <div className="container mx-auto px-4 py-6">
         <FilmList films={sortedFilms} />
       </div>
     </main>

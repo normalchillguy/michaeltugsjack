@@ -20,7 +20,10 @@ const nextConfig = {
     optimizeServerReact: true,
   },
   // Disable Next.js devtools
-  devIndicators: false,
+  devIndicators: {
+    position: "bottom-right",
+    enabled: false,
+  },
 }
 
 module.exports = nextConfig 

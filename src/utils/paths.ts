@@ -1,7 +1,9 @@
 import getConfig from 'next/config';
 
 export function getAssetPath(path: string): string {
-  const { publicRuntimeConfig } = getConfig();
+  // Get runtime config safely with fallback for development
+  const { publicRuntimeConfig = { basePath: '' } } = getConfig() || {};
+  
   // Ensure path starts with a slash
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${publicRuntimeConfig.basePath}${normalizedPath}`;

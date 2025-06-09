@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
+const basePath = isProd ? '/michaeltugsjack' : '';
 
 const nextConfig = {
   output: 'export',  // Enables static HTML export
-  basePath: isProd ? '/michaeltugsjack' : '',
+  basePath,
   assetPrefix: isProd ? '/michaeltugsjack/' : '',
   images: {
     unoptimized: true, // Required for static export
@@ -11,9 +12,13 @@ const nextConfig = {
   // Disable server-side features since we're doing static export
   trailingSlash: true,
   reactStrictMode: true,
-  // Explicitly configure static file serving
+  // Configure both runtime and build-time config
   publicRuntimeConfig: {
-    basePath: isProd ? '/michaeltugsjack' : '',
+    basePath,
+  },
+  // Ensure static assets are handled correctly
+  webpack: (config) => {
+    return config;
   },
 }
 

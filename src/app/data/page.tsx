@@ -168,8 +168,8 @@ export default function DataPage() {
   return (
     <main className="min-h-screen bg-[#2D2510]">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-[#E5A00D]">Films by Release Year</h1>
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+          <h1 className="text-2xl font-bold text-[#E5A00D] text-center sm:text-left">Films by Release Year</h1>
           <Link 
             href="/" 
             className="text-[#E5A00D] hover:text-white transition-colors px-4 py-1 border border-[#E5A00D] rounded hover:bg-[#E5A00D]/10"

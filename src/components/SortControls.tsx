@@ -17,11 +17,11 @@ export default function SortControls({
   onSortOrderChange,
 }: SortControlsProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-2 items-center text-sm">
+    <div className="flex flex-row gap-2 items-center text-sm">
       <select
         value={sortField}
         onChange={(e) => onSortFieldChange(e.target.value as SortField)}
-        className="w-full sm:w-48 bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
+        className="bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
       >
         <option value="title">Title</option>
         <option value="year">Release Date</option>
@@ -31,7 +31,7 @@ export default function SortControls({
       <select
         value={sortOrder}
         onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}
-        className="w-full sm:w-32 bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
+        className="bg-[#2D2510] text-white border border-gray-700 rounded px-2 py-1 cursor-pointer hover:border-gray-600 focus:outline-none focus:border-[#E5A00D]"
       >
         <option value="asc">Ascending</option>
         <option value="desc">Descending</option>

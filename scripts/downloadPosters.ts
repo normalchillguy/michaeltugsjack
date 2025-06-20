@@ -49,6 +49,18 @@ interface Movie {
   viewCount?: number;
 }
 
+interface PlexSection {
+  key: string;
+  type: string;
+  title: string;
+}
+
+interface PlexSectionsResponse {
+  MediaContainer: {
+    Directory: PlexSection[];
+  };
+}
+
 interface PlexResponse {
   MediaContainer: {
     Metadata: Array<{
@@ -136,41 +148,76 @@ async function downloadImage(posterUrl: string, outputPath: string, token: strin
 }
 
 async function fetchAllMovies(plexServerUrl: string, plexToken: string): Promise<Movie[]> {
-  console.log('Fetching all movies from Plex server...');
-  
+  console.log('Fetching library sections from Plex server...');
+
   try {
-    const response = await axios.get<PlexResponse>(`${plexServerUrl}/library/sections/1/all`, {
+    // 1. Fetch all library sections
+    const sectionsResponse = await axios.get<PlexSectionsResponse>(`${plexServerUrl}/library/sections`, {
       headers: {
         'Accept': 'application/json',
-        'X-Plex-Token': plexToken
-      }
+        'X-Plex-Token': plexToken,
+      },
     });
 
-    const movies = response.data.MediaContainer.Metadata.map(item => ({
-      id: item.ratingKey,
-      title: item.title,
-      year: item.year,
-      summary: item.summary,
-      thumb: `${item.ratingKey}.jpg`,
-      art: item.art,
-      duration: item.duration,
-      rating: item.rating,
-      contentRating: item.contentRating,
-      studio: item.studio,
-      genres: item.Genre?.map(g => g.tag) || [],
-      directors: item.Director?.map(d => d.tag) || [],
-      writers: item.Writer?.map(w => w.tag),
-      actors: item.Role?.map(r => r.tag),
-      addedAt: item.addedAt,
-      updatedAt: item.updatedAt,
-      lastViewedAt: item.lastViewedAt,
-      viewCount: item.viewCount
-    }));
+    // 2. Find only the "Films" section
+    const movieSections = sectionsResponse.data.MediaContainer.Directory.filter(
+      section => section.type === 'movie' && section.title === 'Films'
+    );
 
-    console.log(`✓ Found ${movies.length} movies`);
-    return movies;
+    if (movieSections.length === 0) {
+      throw new Error('No "Films" library section found on Plex server');
+    }
+
+    console.log(`Found Films section: ${movieSections[0].title} (ID: ${movieSections[0].key})`);
+
+    // 3. Fetch movies from the Films section only
+    const section = movieSections[0];
+    console.log(`Fetching movies from Films section (ID: ${section.key})`);
+    const moviesResponse = await axios.get<PlexResponse>(`${plexServerUrl}/library/sections/${section.key}/all`, {
+      headers: {
+        'Accept': 'application/json',
+        'X-Plex-Token': plexToken,
+      },
+    });
+
+    const rawCount = moviesResponse.data.MediaContainer.Metadata ? moviesResponse.data.MediaContainer.Metadata.length : 0;
+    console.log(`  [API] Raw count from Films section: ${rawCount}`);
+
+    if (moviesResponse.data.MediaContainer.Metadata) {
+      const movies = moviesResponse.data.MediaContainer.Metadata.map(item => ({
+            id: item.ratingKey,
+            title: item.title,
+            year: item.year,
+            summary: item.summary,
+            thumb: `${item.ratingKey}.jpg`,
+            art: item.art,
+            duration: item.duration,
+            rating: item.rating,
+            contentRating: item.contentRating,
+            studio: item.studio,
+            genres: item.Genre?.map(g => g.tag) || [],
+            directors: item.Director?.map(d => d.tag) || [],
+            writers: item.Writer?.map(w => w.tag),
+            actors: item.Role?.map(r => r.tag),
+            addedAt: item.addedAt,
+            updatedAt: item.updatedAt,
+            lastViewedAt: item.lastViewedAt,
+            viewCount: item.viewCount
+        }));
+        
+        console.log(`  ✓ Found ${movies.length} movies in Films section`);
+        return movies;
+    } else {
+        console.log(`  ⚠ No movies found in Films section`);
+        return [];
+    }
+
   } catch (error) {
     console.error('Failed to fetch movies from Plex server:', error);
+    if (axios.isAxiosError(error)) {
+        console.error(`  Status: ${error.response?.status}`);
+        console.error(`  Message: ${error.message}`);
+    }
     throw error;
   }
 }
@@ -182,7 +229,8 @@ async function main() {
   const plexToken = process.env.PLEX_TOKEN;
   
   if (!plexServerUrl || !plexToken) {
-    throw new Error('Missing PLEX_SERVER_URL or PLEX_TOKEN environment variables');
+    console.error('Plex server URL or token is not configured in .env.local');
+    process.exit(1);
   }
 
   console.log(`Using Plex server: ${plexServerUrl}`);
@@ -190,17 +238,22 @@ async function main() {
   // Fetch all movies from Plex
   const movies = await fetchAllMovies(plexServerUrl, plexToken);
 
-  // Update movies.json
-  const moviesJsonPath = path.join(process.cwd(), 'src', 'data', 'movies.json');
-  const moviesData = {
+  // Ensure the movies data directory exists
+  const moviesDir = path.join(__dirname, '../public/data');
+  if (!fs.existsSync(moviesDir)) {
+    fs.mkdirSync(moviesDir, { recursive: true });
+  }
+
+  // Write movies data to a JSON file
+  const moviesFilePath = path.join(moviesDir, 'movies.json');
+  fs.writeFileSync(moviesFilePath, JSON.stringify({
     lastUpdated: new Date().toISOString(),
-    movies
-  };
-  fs.writeFileSync(moviesJsonPath, JSON.stringify(moviesData, null, 2));
-  console.log('✓ Updated movies.json');
+    movies: movies
+  }, null, 2));
+  console.log(`✓ Saved ${movies.length} movies to ${moviesFilePath}`);
 
   // Create the posters directory in src/assets
-  const postersDir = path.join(process.cwd(), 'src', 'assets', 'posters');
+  const postersDir = path.join(__dirname, '../src/assets/posters');
   if (!fs.existsSync(postersDir)) {
     fs.mkdirSync(postersDir, { recursive: true });
   }

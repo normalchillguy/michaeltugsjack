@@ -19,7 +19,7 @@ export default function Home() {
       try {
         // Use the correct path based on environment
         const basePath = process.env.NODE_ENV === 'production' ? '/michaeltugsjack' : '';
-        const response = await fetch(`${basePath}/data/movies.json`);
+        const response = await fetch(`${basePath}/data/movies.json?v=${Date.now()}`);
         const data = await response.json();
         setFilms(data.movies);
         setError(null);
@@ -80,7 +80,7 @@ export default function Home() {
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#E5A00D] mb-4 truncate">
             {films.length} films in the #MichaelTugsJack server
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <SortControls
               sortField={sortField}
               sortOrder={sortOrder}

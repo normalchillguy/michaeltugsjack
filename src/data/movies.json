@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-06-09T04:27:01.430Z",
+  "lastUpdated": "2025-06-20T03:02:37.812Z",
   "movies": [
     {
       "id": "36818",
@@ -126,7 +126,7 @@
       "summary": "Frustrated former journalist Chuck Tatum now working for an Albuquerque newspaper exploits a story about trading post owner Leo Minosa trapped in a cave to rekindle Chuck's career, but the story soon escalates into a media circus.",
       "thumb": "38212.jpg",
       "art": "/library/metadata/38212/art/1749366688",
-      "duration": 6675027,
+      "duration": 6675026,
       "rating": 9,
       "contentRating": "Not Rated",
       "studio": "Paramount Pictures",
@@ -324,7 +324,9 @@
         "George Sanders"
       ],
       "addedAt": 1748018889,
-      "updatedAt": 1748134312
+      "updatedAt": 1748134312,
+      "lastViewedAt": 1749699351,
+      "viewCount": 1
     },
     {
       "id": "850",
@@ -478,8 +480,7 @@
       "addedAt": 1655186274,
       "updatedAt": 1747785265,
       "lastViewedAt": 1736560225,
-      "viewCount": 1,
-      "originallyAvailableAt": 1349049600
+      "viewCount": 1
     },
     {
       "id": "873",
@@ -550,7 +551,7 @@
       "summary": "When Mrs. Tremayne is mysteriously poisoned with gas, ambulance driver Frank Jessup meets her refined but sensuous stepdaughter Diane, who quickly pursues and infatuates him. Under Diane's seductive influence, Frank is soon the Tremayne chauffeur; but he begins to suspect danger under her surface sweetness. When he shows signs of pulling away, Diane schemes to get him in so deep he'll never get out.",
       "thumb": "38238.jpg",
       "art": "/library/metadata/38238/art/1749428975",
-      "duration": 5513425,
+      "duration": 5513424,
       "rating": 7.7,
       "contentRating": "Not Rated",
       "studio": "RKO Radio Pictures",
@@ -571,7 +572,9 @@
         "Mona Freeman"
       ],
       "addedAt": 1749428794,
-      "updatedAt": 1749428975
+      "updatedAt": 1749428975,
+      "lastViewedAt": 1749528896,
+      "viewCount": 1
     },
     {
       "id": "28",
@@ -1074,8 +1077,8 @@
       "year": 1953,
       "summary": "Tough cop Dave Bannion takes on a politically powerful crime syndicate.",
       "thumb": "38249.jpg",
-      "art": "/library/metadata/38249/art/1749410918",
-      "duration": 5373618,
+      "art": "/library/metadata/38249/art/1749452693",
+      "duration": 5373617,
       "rating": 9.4,
       "contentRating": "Passed",
       "studio": "Columbia Pictures",
@@ -1096,7 +1099,9 @@
         "Lee Marvin"
       ],
       "addedAt": 1749428799,
-      "updatedAt": 1749410918
+      "updatedAt": 1749452693,
+      "lastViewedAt": 1749687433,
+      "viewCount": 1
     },
     {
       "id": "1536",
@@ -1189,7 +1194,9 @@
         "John Ridgely"
       ],
       "addedAt": 1749329414,
-      "updatedAt": 1749366691
+      "updatedAt": 1749366691,
+      "lastViewedAt": 1749611705,
+      "viewCount": 1
     },
     {
       "id": "905",
@@ -2044,7 +2051,7 @@
       "summary": "Sam Bowden witnesses a rape committed by Max Cady and testifies against him. When released after 8 years in prison, Cady begins stalking Bowden and his family but is always clever enough not to violate the law.",
       "thumb": "38252.jpg",
       "art": "/library/metadata/38252/art/1749410889",
-      "duration": 6354389,
+      "duration": 6354388,
       "rating": 9.2,
       "contentRating": "PG",
       "studio": "Melville-Talbot Productions",
@@ -3079,6 +3086,35 @@
       "updatedAt": 1747785180
     },
     {
+      "id": "38329",
+      "title": "Do the Right Thing",
+      "year": 1989,
+      "summary": "Salvatore \"Sal\" Fragione is the Italian owner of a pizzeria in Brooklyn. A neighborhood local, Buggin' Out, becomes upset when he sees that the pizzeria's Wall of Fame exhibits only Italian actors. Buggin' Out believes a pizzeria in a black neighborhood should showcase black actors, but Sal disagrees. The wall becomes a symbol of racism and hate to Buggin' Out and to other people in the neighborhood, and tensions rise.",
+      "thumb": "38329.jpg",
+      "art": "/library/metadata/38329/art/1750272237",
+      "duration": 7209298,
+      "rating": 9.2,
+      "contentRating": "R",
+      "studio": "Universal Pictures",
+      "genres": [
+        "Drama",
+        "Comedy"
+      ],
+      "directors": [
+        "Spike Lee"
+      ],
+      "writers": [
+        "Spike Lee"
+      ],
+      "actors": [
+        "Danny Aiello",
+        "Ossie Davis",
+        "Ruby Dee"
+      ],
+      "addedAt": 1750289996,
+      "updatedAt": 1750272237
+    },
+    {
       "id": "1021",
       "title": "Dogville",
       "year": 2003,
@@ -3143,7 +3179,7 @@
       "year": 1959,
       "summary": "Donald's goes on an adventure in which it is explained how mathematics can be useful in real life. Through this journey it is shown how numbers are more than graphs and charts, they are geometry, music and magical living things.",
       "thumb": "2.jpg",
-      "art": "/library/metadata/2/art/1749410258",
+      "art": "/library/metadata/2/art/1749884625",
       "duration": 1654987,
       "contentRating": "Not Rated",
       "studio": "Walt Disney Productions",
@@ -3164,7 +3200,7 @@
         "Paul Frees"
       ],
       "addedAt": 1701376500,
-      "updatedAt": 1749410258
+      "updatedAt": 1749884625
     },
     {
       "id": "35",
@@ -3497,7 +3533,8 @@
         "Sasha Frolova"
       ],
       "addedAt": 1745016661,
-      "updatedAt": 1747785437
+      "updatedAt": 1747785437,
+      "lastViewedAt": 1750119255
     },
     {
       "id": "133",
@@ -4462,7 +4499,7 @@
         "Gordon Thomas"
       ],
       "addedAt": 1701359608,
-      "updatedAt": 1749428290
+      "updatedAt": 1749884639
     },
     {
       "id": "189",
@@ -4942,6 +4979,35 @@
       ],
       "addedAt": 1704250825,
       "updatedAt": 1747785193
+    },
+    {
+      "id": "38275",
+      "title": "Hairspray",
+      "year": 1988,
+      "summary": "It's Baltimore, 1962, and rebellious teenager Tracy Turnblad (Lake) attempts to win the coveted 'Miss Auto Show' crown as she fights against racial discrimination. Written and directed by John Waters (Polyester, Serial Mom) and featuring rock legends Sonny Bono and Deborah Harry as the pushy parents of Tracy's rival.",
+      "thumb": "38275.jpg",
+      "art": "/library/metadata/38275/art/1749770701",
+      "duration": 5510634,
+      "rating": 9.8,
+      "contentRating": "PG",
+      "studio": "New Line Cinema",
+      "genres": [
+        "Drama",
+        "Comedy"
+      ],
+      "directors": [
+        "John Waters"
+      ],
+      "writers": [
+        "John Waters"
+      ],
+      "actors": [
+        "Ricki Lake",
+        "Divine",
+        "Debbie Harry"
+      ],
+      "addedAt": 1749770697,
+      "updatedAt": 1749770701
     },
     {
       "id": "201",
@@ -5580,6 +5646,36 @@
       "updatedAt": 1747785195
     },
     {
+      "id": "38319",
+      "title": "The Hustler",
+      "year": 1961,
+      "summary": "An up-and-coming pool player plays a long-time champion in a single high-stakes match.",
+      "thumb": "38319.jpg",
+      "art": "/library/metadata/38319/art/1750272209",
+      "duration": 8084562,
+      "rating": 9.4,
+      "contentRating": "Not Rated",
+      "studio": "Rossen Films",
+      "genres": [
+        "Drama",
+        "Sport"
+      ],
+      "directors": [
+        "Robert Rossen"
+      ],
+      "writers": [
+        "Robert Rossen",
+        "Sidney Carroll"
+      ],
+      "actors": [
+        "Paul Newman",
+        "Jackie Gleason",
+        "Piper Laurie"
+      ],
+      "addedAt": 1750289966,
+      "updatedAt": 1750272209
+    },
+    {
       "id": "282",
       "title": "I Now Pronounce You Chuck & Larry",
       "year": 2007,
@@ -6068,6 +6164,36 @@
       "updatedAt": 1747907176
     },
     {
+      "id": "38318",
+      "title": "Invasion of the Body Snatchers",
+      "year": 1956,
+      "summary": "Dr. Miles Bennell returns to his small town practice to find several of his patients suffering the paranoid delusion that their friends or relatives are impostors. He is initially skeptical, especially when the alleged doppelgangers are able to answer detailed questions about their victim's lives, but he is eventually persuaded that something odd has happened and determines to find out what is causing this phenomenon.",
+      "thumb": "38318.jpg",
+      "art": "/library/metadata/38318/art/1750272175",
+      "duration": 4811848,
+      "rating": 9.7,
+      "contentRating": "Not Rated",
+      "studio": "Allied Artists Pictures",
+      "genres": [
+        "Horror",
+        "Science Fiction"
+      ],
+      "directors": [
+        "Don Siegel"
+      ],
+      "writers": [
+        "Daniel Mainwaring",
+        "Jack Finney"
+      ],
+      "actors": [
+        "Kevin McCarthy",
+        "Dana Wynter",
+        "King Donovan"
+      ],
+      "addedAt": 1750289966,
+      "updatedAt": 1750272175
+    },
+    {
       "id": "36659",
       "title": "Irma Vep",
       "year": 1996,
@@ -6494,6 +6620,36 @@
       "updatedAt": 1747785459
     },
     {
+      "id": "38383",
+      "title": "Kind Hearts and Coronets",
+      "year": 1949,
+      "summary": "In the hours before his execution for murder, Louis, the 10th Duke of Chalfont, writes his memoirs. In them he details how, though descended from nobility, he grew up poor and had to pull himself up by his bootstraps, career-wise. Then, discovering that only eight members of the D'Ascoyne family stood between him and the dukedom, he systematically started killing them, making the murders look like accidents.",
+      "thumb": "38383.jpg",
+      "art": "/library/metadata/38383/art/1750277849",
+      "duration": 6365994,
+      "rating": 10,
+      "contentRating": "Not Rated",
+      "studio": "Ealing Studios",
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "directors": [
+        "Robert Hamer"
+      ],
+      "writers": [
+        "Roy Horniman",
+        "Robert Hamer"
+      ],
+      "actors": [
+        "Dennis Price",
+        "Alec Guinness",
+        "Joan Greenwood"
+      ],
+      "addedAt": 1750295827,
+      "updatedAt": 1750277849
+    },
+    {
       "id": "1601",
       "title": "The King of Comedy",
       "year": 1982,
@@ -6622,8 +6778,8 @@
       "year": 1947,
       "summary": "Fascinated by gorgeous Mrs. Bannister, seaman Michael O'Hara joins a bizarre yachting cruise, and ends up mired in a complex murder plot.",
       "thumb": "38240.jpg",
-      "art": "/library/metadata/38240/art/1749410960",
-      "duration": 5250345,
+      "art": "/library/metadata/38240/art/1749452695",
+      "duration": 5250343,
       "rating": 8.6,
       "contentRating": "Not Rated",
       "studio": "Mercury Productions",
@@ -6644,7 +6800,7 @@
         "Everett Sloane"
       ],
       "addedAt": 1749428796,
-      "updatedAt": 1749410960
+      "updatedAt": 1749452695
     },
     {
       "id": "1602",
@@ -7096,6 +7252,35 @@
       ],
       "addedAt": 1730557934,
       "updatedAt": 1747785448
+    },
+    {
+      "id": "38330",
+      "title": "Lucy",
+      "year": 2014,
+      "summary": "A woman, accidentally caught in a dark deal, turns the tables on her captors and transforms into a merciless warrior evolved beyond human logic.",
+      "thumb": "38330.jpg",
+      "art": "/library/metadata/38330/art/1750272219",
+      "duration": 5368738,
+      "rating": 6.7,
+      "contentRating": "R",
+      "studio": "EuropaCorp",
+      "genres": [
+        "Action",
+        "Science Fiction"
+      ],
+      "directors": [
+        "Luc Besson"
+      ],
+      "writers": [
+        "Luc Besson"
+      ],
+      "actors": [
+        "Scarlett Johansson",
+        "Morgan Freeman",
+        "Choi Min-sik"
+      ],
+      "addedAt": 1750289996,
+      "updatedAt": 1750272219
     },
     {
       "id": "37595",
@@ -7974,8 +8159,8 @@
       "year": 1950,
       "summary": "A small-time grifter and nightclub tout takes advantage of some fortuitous circumstances and tries to become a big-time player as a wrestling promoter.",
       "thumb": "38250.jpg",
-      "art": "/library/metadata/38250/art/1749428806",
-      "duration": 5750784,
+      "art": "/library/metadata/38250/art/1749452697",
+      "duration": 5750782,
       "rating": 8.6,
       "contentRating": "Not Rated",
       "studio": "20th Century Fox",
@@ -7996,7 +8181,7 @@
         "Gene Tierney"
       ],
       "addedAt": 1749428800,
-      "updatedAt": 1749428806
+      "updatedAt": 1749452697
     },
     {
       "id": "38251",
@@ -8005,7 +8190,7 @@
       "summary": "A self-proclaimed preacher marries a gullible widow whose young children are reluctant to tell him where their real dad hid the $10,000 he'd stolen in a robbery.",
       "thumb": "38251.jpg",
       "art": "/library/metadata/38251/art/1749428904",
-      "duration": 5595691,
+      "duration": 5595690,
       "rating": 9.3,
       "contentRating": "Approved",
       "studio": "Paul Gregory Productions",
@@ -8063,8 +8248,8 @@
       "year": 1947,
       "summary": "The rise and fall of Stanton Carlisle, a mentalist whose lies and deceit prove to be his downfall.",
       "thumb": "38239.jpg",
-      "art": "/library/metadata/38239/art/1749410947",
-      "duration": 6699862,
+      "art": "/library/metadata/38239/art/1749452641",
+      "duration": 6699861,
       "rating": 8.8,
       "contentRating": "Passed",
       "studio": "20th Century Fox",
@@ -8085,7 +8270,7 @@
         "Coleen Gray"
       ],
       "addedAt": 1749428794,
-      "updatedAt": 1749410947
+      "updatedAt": 1749452641
     },
     {
       "id": "1611",
@@ -9703,8 +9888,8 @@
       "year": 1945,
       "summary": "Chris Cross, 25 years a cashier, has a gold watch and little else. That rainy night, he rescues delectable Kitty from her abusive boyfriend Johnny. Smitten, amateur painter Chris lets Kitty think he's a wealthy artist. At Johnny's urging, she lets Chris establish her in an apartment (with his shrewish wife's money). There, Chris paints masterpieces; but Johnny sells them under Kitty's name, with disastrous and ironic results.",
       "thumb": "38241.jpg",
-      "art": "/library/metadata/38241/art/1749410931",
-      "duration": 6114836,
+      "art": "/library/metadata/38241/art/1749452638",
+      "duration": 6114835,
       "rating": 10,
       "contentRating": "Approved",
       "studio": "Diana Productions",
@@ -9725,7 +9910,7 @@
         "Dan Duryea"
       ],
       "addedAt": 1749428798,
-      "updatedAt": 1749410931
+      "updatedAt": 1749452638
     },
     {
       "id": "466",
@@ -10597,7 +10782,8 @@
       ],
       "addedAt": 1749065773,
       "updatedAt": 1749182823,
-      "lastViewedAt": 1749068627
+      "lastViewedAt": 1749851411,
+      "viewCount": 1
     },
     {
       "id": "1501",
@@ -11105,6 +11291,36 @@
       ],
       "addedAt": 1701405154,
       "updatedAt": 1747984262
+    },
+    {
+      "id": "38317",
+      "title": "The Ten Commandments",
+      "year": 1956,
+      "summary": "Escaping death, a Hebrew infant is raised in a royal household to become a prince. Upon discovery of his true heritage, Moses embarks on a personal quest to reclaim his destiny as the leader and liberator of the Hebrew people.",
+      "thumb": "38317.jpg",
+      "art": "/library/metadata/38317/art/1750272168",
+      "duration": 13898536,
+      "rating": 8.4,
+      "contentRating": "G",
+      "studio": "Paramount Pictures",
+      "genres": [
+        "Drama",
+        "History"
+      ],
+      "directors": [
+        "Cecil B. DeMille"
+      ],
+      "writers": [
+        "J.H. Ingraham",
+        "A.E. Southon"
+      ],
+      "actors": [
+        "Charlton Heston",
+        "Yul Brynner",
+        "Anne Baxter"
+      ],
+      "addedAt": 1750289966,
+      "updatedAt": 1750272168
     },
     {
       "id": "716",
@@ -11672,6 +11888,35 @@
       "updatedAt": 1747785467
     },
     {
+      "id": "38320",
+      "title": "Under the Skin",
+      "year": 2013,
+      "summary": "An alien entity inhabits the earthly form of a young woman who combs the roads and streets of Scotland in search of the human prey she came to plunder. She seduces her isolated and forsaken male victims into an otherworldly dimension where they are stripped and consumed. However, existence in all its complexity begin to change the alien visitor. She begins to discover herself as human with tragic and terrifying consequences.",
+      "thumb": "38320.jpg",
+      "art": "/library/metadata/38320/art/1750272164",
+      "duration": 6489504,
+      "rating": 8.3,
+      "contentRating": "R",
+      "studio": "Nick Wechsler Productions",
+      "genres": [
+        "Science Fiction",
+        "Thriller"
+      ],
+      "directors": [
+        "Jonathan Glazer"
+      ],
+      "writers": [
+        "Milo Addica"
+      ],
+      "actors": [
+        "Scarlett Johansson",
+        "Jeremy McWilliams",
+        "Lynsey Taylor Mackay"
+      ],
+      "addedAt": 1750289966,
+      "updatedAt": 1750272164
+    },
+    {
       "id": "1734",
       "title": "Underground",
       "year": 1995,
@@ -12088,7 +12333,9 @@
         "John Wood"
       ],
       "addedAt": 1701364364,
-      "updatedAt": 1747907655
+      "updatedAt": 1747907655,
+      "lastViewedAt": 1750302777,
+      "viewCount": 1
     },
     {
       "id": "1742",
@@ -12540,6 +12787,36 @@
       "updatedAt": 1747785480
     },
     {
+      "id": "38316",
+      "title": "Yojimbo",
+      "year": 1961,
+      "summary": "A nameless ronin, or samurai with no master, enters a small village in feudal Japan where two rival businessmen are struggling for control of the local gambling trade. Taking the name Sanjuro Kuwabatake, the ronin convinces both silk merchant Tazaemon and sake merchant Tokuemon to hire him as a personal bodyguard, then artfully sets in motion a full-scale gang war between the two ambitious and unscrupulous men.",
+      "thumb": "38316.jpg",
+      "art": "/library/metadata/38316/art/1750295830",
+      "duration": 6653462,
+      "rating": 9.6,
+      "contentRating": "Not Rated",
+      "studio": "TOHO",
+      "genres": [
+        "Drama",
+        "Action"
+      ],
+      "directors": [
+        "Akira Kurosawa"
+      ],
+      "writers": [
+        "Ryūzō Kikushima",
+        "Akira Kurosawa"
+      ],
+      "actors": [
+        "Toshirō Mifune",
+        "Tatsuya Nakadai",
+        "Yōko Tsukasa"
+      ],
+      "addedAt": 1750289963,
+      "updatedAt": 1750295830
+    },
+    {
       "id": "773",
       "title": "You've Got Mail",
       "year": 1998,
@@ -12654,6 +12931,78 @@
       ],
       "addedAt": 1735362977,
       "updatedAt": 1747785461
+    },
+    {
+      "id": "35745",
+      "title": "chao gardens",
+      "summary": "",
+      "thumb": "35745.jpg",
+      "art": "/library/metadata/35745/art/1747795375",
+      "duration": 10820733,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728067261,
+      "updatedAt": 1747795375
+    },
+    {
+      "id": "35746",
+      "title": "Ecco the Dolphin Longplay (Sega Genesis) [QHD]",
+      "summary": "",
+      "thumb": "35746.jpg",
+      "art": "/library/metadata/35746/art/1748227289",
+      "duration": 4077656,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728069718,
+      "updatedAt": 1748227289
+    },
+    {
+      "id": "35747",
+      "title": "fe10_speedrun",
+      "summary": "",
+      "thumb": "35747.jpg",
+      "art": "/library/metadata/35747/art/1748227300",
+      "duration": 11777966,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728067373,
+      "updatedAt": 1748227300
+    },
+    {
+      "id": "35748",
+      "title": "ffx_dark_aeons",
+      "summary": "",
+      "thumb": "35748.jpg",
+      "art": "/library/metadata/35748/art/1748227314",
+      "duration": 8825927,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728070356,
+      "updatedAt": 1748227314
+    },
+    {
+      "id": "35749",
+      "title": "smb2_storymode",
+      "summary": "",
+      "thumb": "35749.jpg",
+      "art": "/library/metadata/35749/art/1748227336",
+      "duration": 5178966,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728067390,
+      "updatedAt": 1748227336
+    },
+    {
+      "id": "35750",
+      "title": "thug2_story",
+      "summary": "",
+      "thumb": "35750.jpg",
+      "art": "/library/metadata/35750/art/1748227328",
+      "duration": 19692350,
+      "genres": [],
+      "directors": [],
+      "addedAt": 1728144349,
+      "updatedAt": 1748227328
     }
   ]
 }

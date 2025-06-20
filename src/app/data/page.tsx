@@ -15,6 +15,7 @@ import type { Film } from '@/types/film';
 import Link from 'next/link';
 import LoadingClapper from '@/components/LoadingClapper';
 import { Bar } from 'react-chartjs-2';
+import { useMediaQuery } from '@/utils/useMediaQuery';
 
 ChartJS.register(
   CategoryScale,
@@ -29,6 +30,7 @@ export default function DataPage() {
   const [films, setFilms] = useState<Film[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const loadFilms = async () => {
@@ -96,6 +98,7 @@ export default function DataPage() {
   };
 
   const chartOptions = {
+    indexAxis: isMobile ? ('y' as const) : ('x' as const),
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -103,6 +106,7 @@ export default function DataPage() {
         display: false,
       },
       tooltip: {
+        displayColors: false,
         backgroundColor: '#1F1C17',
         titleColor: '#E5A00D',
         bodyColor: '#FFFFFF',
@@ -120,6 +124,12 @@ export default function DataPage() {
             
             return yearData.films.map(film => film.title);
           },
+          labelColor: (context: any) => {
+            return {
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+            }
+          }
         },
       },
     },
@@ -127,11 +137,12 @@ export default function DataPage() {
       x: {
         title: {
           display: true,
-          text: 'Release Year',
+          text: isMobile ? 'Number of Films' : 'Release Year',
           color: '#FFFFFF',
         },
         ticks: {
           color: '#FFFFFF',
+          stepSize: isMobile ? 1 : undefined,
         },
         grid: {
           color: '#333333',
@@ -140,12 +151,12 @@ export default function DataPage() {
       y: {
         title: {
           display: true,
-          text: 'Number of Films',
+          text: isMobile ? 'Release Year' : 'Number of Films',
           color: '#FFFFFF',
         },
         ticks: {
           color: '#FFFFFF',
-          stepSize: 1,
+          stepSize: isMobile ? undefined : 1,
         },
         grid: {
           color: '#333333',
@@ -167,7 +178,7 @@ export default function DataPage() {
           </Link>
         </div>
         
-        <div className="bg-[#1F1C17] p-6 rounded-lg shadow-lg" style={{ height: '70vh' }}>
+        <div className="bg-[#1F1C17] p-6 rounded-lg shadow-lg" style={{ height: isMobile ? '80vh' : '70vh' }}>
           <Bar data={chartData} options={chartOptions} />
         </div>
       </div>

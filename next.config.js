@@ -2,8 +2,8 @@
 const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig = {
-  output: 'export',
-  distDir: 'dist',
+  // output: 'export',
+  // distDir: 'dist',
   basePath: isProd ? '/michaeltugsjack' : '',
   images: {
     unoptimized: true,

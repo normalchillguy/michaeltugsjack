@@ -34,7 +34,7 @@ jobs:
         run: npm ci
       
       - name: Build with Next.js
-        run: npx next build
+        run: npm run build
         
       - name: Copy public files
         run: cp -r public/* dist/
@@ -42,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./out
 
   deploy:
     environment:
